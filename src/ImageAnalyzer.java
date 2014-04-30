@@ -9,6 +9,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.vecmath.*;
@@ -67,7 +68,8 @@ public class ImageAnalyzer extends Applet{
 
 			try{
 				System.out.println(dir.getParent());
-				File f = new File(dir.getParent()+"\\img\\stormtrooper rising sun.jpg");
+				File f = new File(dir.getParent()+"/img/stormtrooper rising sun.jpg");
+				System.out.println(f.getAbsolutePath());
 				// 		dir.listFiles(IMAGE_FILTER)[0];
 				img = ImageIO.read(f);
 
@@ -78,6 +80,7 @@ public class ImageAnalyzer extends Applet{
 				
 				Vector4d pixel;
 				HashMap<Tuple2d, Color> colours = new HashMap<Tuple2d, Color>();
+				HashMap<Tuple2d, Color> hsvColors = new HashMap<Tuple2d, Color>();
 				
 				int[][] pixels = convertTo2DWithoutUsingGetRGB(img);
 				for(int i = 0; i < pixels.length; i++)
@@ -87,6 +90,11 @@ public class ImageAnalyzer extends Applet{
 						pixel = toRGB(pixels[i][j]);
 						System.out.println(pixel);
 						colours.put(new Vector2d(i,j),new Color((float)(pixel.y/255),(float)(pixel.z/255),(float) (pixel.w/255)));
+						float[] hsv = Color.RGBtoHSB((int)(pixel.y), (int)(pixel.z), (int)(pixel.w), new float[3]);
+						hsvColors.put(new Vector2d(i,j), Color.getHSBColor(hsv[0],hsv[1],hsv[2]));
+						/*for (Map.Entry<Tuple2d, Color> entry : hsvColors.entrySet()) {
+						    System.out.println(entry.getValue());
+						}*/
 					}
 				}
 
